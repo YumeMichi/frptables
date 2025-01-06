@@ -23,17 +23,16 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"os"
 	"path/filepath"
 	"time"
 
 	"github.com/hpcloud/tail"
+	"github.com/zngw/frptables/apnic"
 	"github.com/zngw/frptables/config"
 	"github.com/zngw/frptables/rules"
 	"github.com/zngw/log"
-	"github.com/zngw/zipinfo/ipinfo"
 )
 
 func main() {
@@ -60,14 +59,11 @@ func main() {
 	logFile = filepath.Join(config.Cfg.Logs, file)
 	log.InitLog("all", logFile, "trace", 7, true, []string{"add", "link", "net", "sys"})
 
-	var ipCfg []interface{}
-	err = json.Unmarshal([]byte(config.Cfg.IpInfo), &ipCfg)
-	if err == nil {
-		ipinfo.Init(ipCfg)
-	}
-
 	// 初始化规则
 	rules.Init()
+
+	// 初始化 ip 地址信息
+	apnic.Init()
 
 	// 启动用tail监听
 	frpLog, _ := filepath.Abs(config.Cfg.FrpsLog)

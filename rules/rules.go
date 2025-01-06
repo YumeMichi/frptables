@@ -25,10 +25,10 @@ package rules
 import (
 	"fmt"
 
+	"github.com/zngw/frptables/apnic"
 	"github.com/zngw/frptables/config"
 	"github.com/zngw/frptables/util"
 	"github.com/zngw/log"
-	"github.com/zngw/zipinfo/ipinfo"
 )
 
 // 拦截IP-端口，因为验证ip有时间差，攻击频率太高会导致防火墙重复添加。
@@ -81,19 +81,17 @@ func checkAllow(ip string, port int) bool {
 func checkRules(ip string, port int) (refuse bool, desc string, p, count int) {
 	info := getIpHistory(ip)
 	if !info.HasInfo {
-		err, ipInfo := ipinfo.GetIpInfo(ip)
-		info.HasInfo = true
+		has, ipInfo, err := apnic.Check(ip)
 
-		if err != nil || ipInfo.Status != "success" {
+		if err != nil || !has {
 			// 地址获取不成功，跳过
 			refuse = false
 			p = -1
 			return
 		}
 
+		info.HasInfo = has
 		info.Country = ipInfo.Country
-		info.Region = ipInfo.Region
-		info.City = ipInfo.City
 	}
 	info.Add()
 
@@ -108,18 +106,8 @@ func checkRules(ip string, port int) (refuse bool, desc string, p, count int) {
 			continue
 		}
 
-		if v.RegionName != "" && v.RegionName != info.Region {
-			// 省不匹配
-			continue
-		}
-
-		if v.City != "" && v.City != info.City {
-			// 城市不匹配
-			continue
-		}
-
 		p = v.Port
-		desc = fmt.Sprintf("%s,%s,%s", info.Country, info.Region, info.City)
+		desc = info.Country
 
 		// 跳过
 		if v.Count < 0 {

@@ -37,8 +37,6 @@ type history struct {
 	Ip      string  // ip
 	HasInfo bool    // 是否请求过IP地址信息
 	Country string  // 国家
-	Region  string  // 省
-	City    string  // 城市
 	List    []int64 // 访问时间列表
 }
 

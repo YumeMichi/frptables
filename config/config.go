@@ -30,7 +30,6 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/zngw/frptables/util"
@@ -52,18 +51,15 @@ type Conf struct {
 	AllowIp     []string       `yaml:"allow_ip,omitempty"`    // ip白名单
 	AllowPort   []int          `yaml:"allow_port,omitempty"`  // 端口白名单
 	Rules       []CfgRules     `yaml:"rules,omitempty"`       // 规则访问
-	IpInfo      string         `yaml:"ipinfo,omitempty"`      // 规则访问
 	RateMaxTime int64          `yaml:"-"`                     // IP频率中最高超时时间
 }
 
 type CfgRules struct {
-	Port       int    `yaml:"port,omitempty"`       // 端口
-	Country    string `yaml:"country,omitempty"`    // 国家
-	RegionName string `yaml:"regionName,omitempty"` // 省
-	City       string `yaml:"city,omitempty"`       // 城市
-	Rules      string `yaml:"rules,omitempty"`      // 规则
-	Time       int64  `yaml:"time,omitempty"`       // 时间
-	Count      int    `yaml:"count,omitempty"`      // 次数
+	Port    int    `yaml:"port,omitempty"`    // 端口
+	Country string `yaml:"country,omitempty"` // 国家
+	Rules   string `yaml:"rules,omitempty"`   // 规则
+	Time    int64  `yaml:"time,omitempty"`    // 时间
+	Count   int    `yaml:"count,omitempty"`   // 次数
 }
 
 func (c *Conf) Load(file string) (err error) {
@@ -88,8 +84,6 @@ func (c *Conf) Load(file string) (err error) {
 
 	c.RateMaxTime = 0
 	for _, v := range c.Rules {
-		v.RegionName = strings.TrimSuffix(v.RegionName, "省")
-		v.City = strings.TrimSuffix(v.City, "市")
 		if c.RateMaxTime < v.Time {
 			c.RateMaxTime = v.Time
 		}
@@ -161,5 +155,4 @@ func reload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, _ = w.Write([]byte("reload success"))
-	return
 }
