@@ -24,9 +24,10 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -67,7 +68,7 @@ type CfgRules struct {
 
 func (c *Conf) Load(file string) (err error) {
 	refile, _ := filepath.Abs(file)
-	yamlFile, err := ioutil.ReadFile(refile)
+	yamlFile, err := os.ReadFile(refile)
 	if err != nil {
 		return
 	}
@@ -126,7 +127,7 @@ func SendReload() {
 		return
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		// 读取网页数据错误
 		fmt.Println(err)

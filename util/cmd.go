@@ -23,7 +23,7 @@
 package util
 
 import (
-	"io/ioutil"
+	"io"
 	"os/exec"
 	"runtime"
 
@@ -54,7 +54,7 @@ func Command(arg ...string) (result string) {
 	}
 
 	//读取所有输出
-	bytes, err := ioutil.ReadAll(stdout)
+	bytes, err := io.ReadAll(stdout)
 	if err != nil {
 		log.Error("sys", "ReadAll Stdout:%v", err.Error())
 		return
