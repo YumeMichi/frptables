@@ -24,8 +24,6 @@ package config
 
 import (
 	"fmt"
-	"github.com/zngw/frptables/util"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -33,6 +31,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/zngw/frptables/util"
+	"gopkg.in/yaml.v2"
 )
 
 const key = "1ba5d2dd59cc478e"

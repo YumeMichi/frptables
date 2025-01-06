@@ -23,10 +23,11 @@
 package util
 
 import (
-	"github.com/zngw/log"
 	"io/ioutil"
 	"os/exec"
 	"runtime"
+
+	"github.com/zngw/log"
 )
 
 func Command(arg ...string) (result string) {
@@ -42,20 +43,20 @@ func Command(arg ...string) (result string) {
 	//创建获取命令输出管道
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Error("sys","Error:can not obtain stdout pipe for command:%v\n", err)
+		log.Error("sys", "Error:can not obtain stdout pipe for command:%v\n", err)
 		return
 	}
 
 	//执行命令
 	if err := cmd.Start(); err != nil {
-		log.Error("sys","Error:The command is err,%v", err)
+		log.Error("sys", "Error:The command is err,%v", err)
 		return
 	}
 
 	//读取所有输出
 	bytes, err := ioutil.ReadAll(stdout)
 	if err != nil {
-		log.Error("sys","ReadAll Stdout:%v", err.Error())
+		log.Error("sys", "ReadAll Stdout:%v", err.Error())
 		return
 	}
 

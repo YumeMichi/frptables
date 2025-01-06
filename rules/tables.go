@@ -25,7 +25,7 @@ package rules
 import "github.com/zngw/log"
 
 func Check(text string) {
-	err, ip, name, port := parse(text)
+	ip, name, port, err := parse(text)
 	if err != nil {
 		if err.Error() != "not tcp link" {
 			log.Trace("net", err.Error())
@@ -35,6 +35,4 @@ func Check(text string) {
 	}
 
 	rules(ip, name, port)
-
-	return
 }

@@ -24,13 +24,14 @@ package rules
 
 import (
 	"fmt"
-	"github.com/zngw/frptables/config"
 	"regexp"
 	"strings"
+
+	"github.com/zngw/frptables/config"
 )
 
 // 解析日志
-func parse(text string) (err error, ip, name string, port int) {
+func parse(text string) (ip, name string, port int, err error) {
 	// 从frp日志中获取tcp连接信息
 	// 2024/01/24 20:37:51 [I] [proxy.go:204] [de369b802e44e3f9] [S0-SSH] get a user connection [185.226.106.34:40432]
 	if !strings.Contains(text, "get a user connection") {
@@ -39,7 +40,7 @@ func parse(text string) (err error, ip, name string, port int) {
 	}
 
 	// 正则表达式获取转发名和请求ID
-	compileRegex := regexp.MustCompile("^* \\[I] \\[.*] \\[.*] \\[(.*?)] get a user connection \\[(.*?)]")
+	compileRegex := regexp.MustCompile(`^* \\[I] \\[.*] \\[.*] \\[(.*?)] get a user connection \\[(.*?)]`)
 	matchArr := compileRegex.FindStringSubmatch(text)
 
 	if len(matchArr) <= 2 {
@@ -52,7 +53,7 @@ func parse(text string) (err error, ip, name string, port int) {
 	addr := matchArr[2]
 	addrArray := strings.Split(addr, ":")
 	if len(addrArray) != 2 {
-		err = fmt.Errorf(addr + " addr error")
+		err = fmt.Errorf("%s", addr+" addr error")
 		return
 	}
 

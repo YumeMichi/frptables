@@ -25,14 +25,15 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"os"
+	"path/filepath"
+	"time"
+
 	"github.com/hpcloud/tail"
 	"github.com/zngw/frptables/config"
 	"github.com/zngw/frptables/rules"
 	"github.com/zngw/log"
 	"github.com/zngw/zipinfo/ipinfo"
-	"os"
-	"path/filepath"
-	"time"
 )
 
 func main() {
