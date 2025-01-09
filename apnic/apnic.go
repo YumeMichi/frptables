@@ -36,8 +36,9 @@ func apnicInit() {
 		}
 
 		eTag, _ := os.ReadFile(eTagFile)
-		if string(eTag) != "" {
-			req.Header.Set("If-None-Match", string(eTag))
+		eTagVal := strings.TrimSpace(string(eTag))
+		if eTagVal != "" {
+			req.Header.Set("If-None-Match", eTagVal)
 		}
 
 		client := http.Client{}
