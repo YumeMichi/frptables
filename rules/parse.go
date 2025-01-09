@@ -33,14 +33,14 @@ import (
 // 解析日志
 func parse(text string) (ip, name string, port int, err error) {
 	// 从frp日志中获取tcp连接信息
-	// 2024/01/24 20:37:51 [I] [proxy.go:204] [de369b802e44e3f9] [S0-SSH] get a user connection [185.226.106.34:40432]
+	// 2025-01-09 20:22:26.325 [I] [proxy/proxy.go:204] [6b20f9e3d1cd33fc] [ssh-office] get a user connection [122.226.147.98:49812]
 	if !strings.Contains(text, "get a user connection") {
 		err = fmt.Errorf("not tcp link")
 		return
 	}
 
 	// 正则表达式获取转发名和请求ID
-	compileRegex := regexp.MustCompile(`^* \\[I] \\[.*] \\[.*] \\[(.*?)] get a user connection \\[(.*?)]`)
+	compileRegex := regexp.MustCompile(`\s*\[I\] \[.*\] \[.*\] \[(.*?)\] get a user connection \[(.*?)\]`)
 	matchArr := compileRegex.FindStringSubmatch(text)
 
 	if len(matchArr) <= 2 {
