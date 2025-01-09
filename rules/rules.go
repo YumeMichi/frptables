@@ -83,7 +83,7 @@ func checkRules(ip string, port int) (refuse bool, desc string, p, count int) {
 	if !info.HasInfo {
 		has, ipInfo, err := apnic.Check(ip)
 
-		if err != nil || !has {
+		if err != nil {
 			// 地址获取不成功，跳过
 			refuse = false
 			p = -1
