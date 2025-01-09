@@ -1,13 +1,12 @@
 # frps日志文件
-frps_log: ./log/frps.log
+frps_log: /var/log/frp/frps.log
 
 # 输出日志目录
-logs: ./tlog/
+logs: ./log/
 
 # frps 名字端口对应配置
 name_port:
-  "S0-SSH": 5322
-  "家里电脑": 5355
+  "ssh-office": 6002
 
 # 启用防火墙类型 iptables / firewall / md (Microsoft Defender)
 tables_type: iptables
@@ -33,7 +32,7 @@ rules:
   - # 中国地区IP 10分钟3次
     port: -1
     country: CN
-    time: 600
+    time: 10
     count: 3
 
   - # 其他地区IP禁止

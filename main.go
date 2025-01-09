@@ -24,7 +24,6 @@ package main
 
 import (
 	"flag"
-	"os"
 	"path/filepath"
 	"time"
 
@@ -54,9 +53,8 @@ func main() {
 	}
 
 	// 初始化日志
-	_, file := filepath.Split(os.Args[0])
-	logFile, _ := filepath.Abs(config.Cfg.Logs)
-	logFile = filepath.Join(config.Cfg.Logs, file)
+	fileName := time.Now().Format("2006-01-02") + ".log"
+	logFile := filepath.Join(config.Cfg.Logs, fileName)
 	log.InitLog("all", logFile, "trace", 7, true, []string{"add", "link", "net", "sys"})
 
 	// 初始化规则

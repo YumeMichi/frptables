@@ -49,7 +49,7 @@ func apnicInit() {
 		if err != nil {
 			panic(err)
 		}
-		defer resp.Body.Close()
+		resp.Body.Close()
 
 		if resp.StatusCode != http.StatusNotModified {
 			newETag := resp.Header.Get("ETag")
@@ -64,7 +64,7 @@ func apnicInit() {
 			}
 		}
 
-		time.Sleep(time.Hour)
+		time.Sleep(time.Hour * 24)
 	}()
 }
 
