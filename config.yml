@@ -6,6 +6,7 @@ logs: ./log/
 
 # frps 名字端口对应配置
 name_port:
+  "ssh-home": 6001
   "ssh-office": 6002
 
 # 启用防火墙类型 iptables / firewall / md (Microsoft Defender)
@@ -14,11 +15,6 @@ tables_type: iptables
 # ip白名单:
 allow_ip:
   - 127.0.0.1
-
-# 端口白名单
-allow_port:
-  - 8080
-  - 5443
 
 # 规则访问
 rules:
@@ -39,4 +35,4 @@ rules:
     port: -1
     country:
     time: 1
-    count: 0
+    count: 1

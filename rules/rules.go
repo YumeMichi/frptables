@@ -66,12 +66,6 @@ func checkAllow(ip string, port int) bool {
 		}
 	}
 
-	for _, v := range config.Cfg.AllowPort {
-		if v == port {
-			return true
-		}
-	}
-
 	return false
 }
 
@@ -80,6 +74,7 @@ func checkAllow(ip string, port int) bool {
 // 返回： refuse-是否加入规则拒绝访问, desc-描述， p-拒绝访问端口, count-规则间隔内访问次数
 func checkRules(ip string, port int) (refuse bool, desc string, p, count int) {
 	info := getIpHistory(ip)
+	p = port
 	if !info.HasInfo {
 		has, ipInfo, err := apnic.Check(ip)
 
@@ -87,6 +82,11 @@ func checkRules(ip string, port int) (refuse bool, desc string, p, count int) {
 			// 地址获取不成功，跳过
 			refuse = false
 			p = -1
+			return
+		}
+
+		if (!has) {
+			refuse = true
 			return
 		}
 
@@ -161,7 +161,7 @@ func refuse(ip, name string, port int) {
 		if port == -1 {
 			cmd = fmt.Sprintf("iptables -I INPUT -s %s -j DROP", ip)
 		} else {
-			cmd = fmt.Sprintf("iptables -I INPUT -s %s -ptcp --dport %d -j DROP", ip, port)
+			cmd = fmt.Sprintf("iptables -I INPUT -s %s -p tcp --dport %d -j DROP", ip, port)
 		}
 	case "firewall":
 		if port == -1 {

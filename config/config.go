@@ -49,7 +49,6 @@ type Conf struct {
 	NamePort    map[string]int `yaml:"name_port,omitempty"`   // 名字端口对应表
 	TablesType  string         `yaml:"tables_type,omitempty"` // 启用防火墙类型
 	AllowIp     []string       `yaml:"allow_ip,omitempty"`    // ip白名单
-	AllowPort   []int          `yaml:"allow_port,omitempty"`  // 端口白名单
 	Rules       []CfgRules     `yaml:"rules,omitempty"`       // 规则访问
 	RateMaxTime int64          `yaml:"-"`                     // IP频率中最高超时时间
 }
